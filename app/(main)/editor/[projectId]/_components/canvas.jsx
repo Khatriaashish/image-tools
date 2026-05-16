@@ -231,32 +231,32 @@ function CanvasEditor({ project }) {
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center justify-center bg-secondary w-full h-full overflow-hidden"
+      className="relative flex items-center justify-center bg-[#F7F7F8] w-full h-full overflow-hidden"
     >
       <div
         className="absolute inset-0 opacity-10 pointer-events-none"
         style={{
           backgroundImage: `
-            linear-gradient(45deg, #64748b 25%, transparent 25%),
-            linear-gradient(-45deg, #64748b 25%, transparent 25%),
-            linear-gradient(45deg, transparent 75%, #64748b 75%),
-            linear-gradient(-45deg, transparent 75%, #64748b 75%)`,
+            linear-gradient(45deg, #DADDE3 25%, transparent 25%),
+            linear-gradient(-45deg, #DADDE3 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #DADDE3 75%),
+            linear-gradient(-45deg, transparent 75%, #DADDE3 75%)`,
           backgroundSize: "20px 20px",
           backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
         }}
       />
 
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-800/80 z-10">
+        <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
           <div className="flex flex-col items-center gap-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400"></div>
-            <p className="text-white/70 text-sm">Loading canvas...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#DADDE3] border-b-[#002FA7]"></div>
+            <p className="text-[#4B5563] text-sm">Loading canvas...</p>
           </div>
         </div>
       )}
 
       <div className="px-5">
-        <canvas id="canvas" className="border" ref={canvasRef} />
+        <canvas id="canvas" className="border border-[#DADDE3]" ref={canvasRef} />
       </div>
     </div>
   );

@@ -10,6 +10,8 @@ import { Button } from "./ui/button";
 export const BILLING_ENABLED =
   process.env.NEXT_PUBLIC_CLERK_BILLING_ENABLED === "true";
 
+const PRO_PLAN_ID = process.env.NEXT_PUBLIC_CLERK_BILLING_PLAN_ID_PRO || "";
+
 export const plans = [
   {
     id: "free_user",
@@ -27,7 +29,7 @@ export const plans = [
     name: "Pro",
     price: "$12",
     note: "For AI edits and more output",
-    planId: "cplan_2ywZwXjYQQipWYxjCmFZCgCgsTZ",
+    planId: PRO_PLAN_ID,
     features: [
       "Unlimited projects",
       "Unlimited exports",
@@ -77,9 +79,7 @@ function PricingCard({ plan }) {
     <div className="border border-[#DADDE3] bg-white p-6">
       <div className="flex items-start justify-between gap-4 border-b border-[#DADDE3] pb-6">
         <div>
-          <h3 className="text-2xl font-semibold text-[#111827]">
-            {plan.name}
-          </h3>
+          <h3 className="text-2xl font-semibold text-[#111827]">{plan.name}</h3>
           <p className="mt-2 text-sm text-[#6B7280]">{plan.note}</p>
         </div>
         <p className="text-4xl font-semibold text-[#111827]">
@@ -122,7 +122,10 @@ function PricingCard({ plan }) {
 
 export default function PricingSection() {
   return (
-    <section className="border-b border-[#DADDE3] bg-[#F7F7F8] py-16" id="pricing">
+    <section
+      className="border-b border-[#DADDE3] bg-[#F7F7F8] py-16"
+      id="pricing"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 grid gap-8 md:grid-cols-[0.75fr_1.25fr]">
           <div>

@@ -30,7 +30,9 @@ export function BackgroundControls({ project }) {
   const [unsplashImages, setUnsplashImages] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedImageId, setSelectedImageId] = useState(null);
-  const { mutate: consumeAiUsage } = useConvexMutation(api.users.consumeAiUsage);
+  const { mutate: consumeAiUsage } = useConvexMutation(
+    api.users.consumeAiUsage,
+  );
 
   // Get the main image object from canvas
   const getMainImage = () => {
@@ -127,7 +129,7 @@ export function BackgroundControls({ project }) {
           headers: {
             Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
           },
-        }
+        },
       );
 
       if (!response.ok) throw new Error("Failed to search images");

@@ -122,6 +122,80 @@
   }
 }
 
+.editor-shell .text-white,
+.editor-shell .text-white\/70,
+.editor-shell .text-white\/80,
+.editor-shell .text-white\/50 {
+  color: #4b5563 !important;
+}
+
+.editor-shell h1,
+.editor-shell h2,
+.editor-shell h3,
+.editor-shell h4,
+.editor-shell .font-medium,
+.editor-shell .font-semibold {
+  color: #111827;
+}
+
+.editor-shell .text-cyan-300,
+.editor-shell .text-cyan-400,
+.editor-shell .text-cyan-500 {
+  color: #002fa7 !important;
+}
+
+.editor-shell .bg-slate-700,
+.editor-shell .bg-slate-700\/30,
+.editor-shell .bg-slate-700\/50,
+.editor-shell .bg-slate-800,
+.editor-shell .bg-slate-800\/80,
+.editor-shell .bg-cyan-400\/10,
+.editor-shell .bg-cyan-500\/10,
+.editor-shell .bg-amber-500\/10,
+.editor-shell .bg-green-500\/10 {
+  background-color: #f7f7f8 !important;
+}
+
+.editor-shell .bg-cyan-500,
+.editor-shell .data-\[state\=active\]\:bg-cyan-500[data-state="active"] {
+  background-color: #002fa7 !important;
+}
+
+.editor-shell button[class*="bg-[#002FA7]"],
+.editor-shell button[class*="bg-cyan-500"],
+.editor-shell [data-state="active"] {
+  color: #ffffff !important;
+}
+
+.editor-shell button[class*="bg-[#002FA7]"] svg,
+.editor-shell button[class*="bg-cyan-500"] svg,
+.editor-shell [data-state="active"] svg {
+  color: #ffffff !important;
+}
+
+.editor-shell .border-white\/10,
+.editor-shell .border-white\/20,
+.editor-shell .border-cyan-500\/20,
+.editor-shell .border-amber-500\/20,
+.editor-shell .border-green-500\/20 {
+  border-color: #dadde3 !important;
+}
+
+.editor-shell input,
+.editor-shell select,
+.editor-shell textarea {
+  background-color: #ffffff !important;
+  border-color: #dadde3 !important;
+  color: #111827 !important;
+  border-radius: 0 !important;
+}
+
+.editor-shell .rounded-lg,
+.editor-shell .rounded-xl,
+.editor-shell .rounded-2xl {
+  border-radius: 0 !important;
+}
+
 /* 
 .cl-pricingTableCard,
 .cl-pricingTableCardFeatures,

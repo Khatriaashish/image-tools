@@ -13,7 +13,7 @@ export const store = mutation({
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
+        q.eq("tokenIdentifier", identity.tokenIdentifier),
       )
       .unique();
 
@@ -61,7 +61,7 @@ export const getCurrentUser = query({
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
+        q.eq("tokenIdentifier", identity.tokenIdentifier),
       )
       .unique();
 
@@ -84,7 +84,7 @@ export const consumeAiUsage = mutation({
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
+        q.eq("tokenIdentifier", identity.tokenIdentifier),
       )
       .unique();
 
@@ -102,7 +102,7 @@ export const consumeAiUsage = mutation({
 
     if (user.aiUsesUsed >= 2) {
       throw new Error(
-        "Free plan includes 2 AI uses. Upgrade to Pro for unlimited AI tools."
+        "Free plan includes 2 AI uses. Upgrade to Pro for unlimited AI tools.",
       );
     }
 

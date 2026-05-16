@@ -122,10 +122,11 @@ export function EditorTopBar({ project }) {
 
   // Use the loading states from the hooks
   const { mutate: updateProject, isLoading: isSaving } = useConvexMutation(
-    api.projects.updateProject
+    api.projects.updateProject,
   );
   const { data: user } = useConvexQuery(api.users.getCurrentUser);
-  const { hasAccess, canExport, isFree, getRestrictionReason } = usePlanAccess(user);
+  const { hasAccess, canExport, isFree, getRestrictionReason } =
+    usePlanAccess(user);
 
   // Save canvas state to undo stack
   const saveToUndoStack = () => {
@@ -411,7 +412,7 @@ export function EditorTopBar({ project }) {
 
   return (
     <>
-      <div className="border-b px-6 py-3">
+      <div className="border-b border-[#DADDE3] bg-white px-6 py-3">
         {/* Header Row */}
         <div className="flex items-center justify-between mb-4">
           {/* Left: Back button and project name */}
@@ -420,14 +421,16 @@ export function EditorTopBar({ project }) {
               variant="ghost"
               size="sm"
               onClick={handleBackToDashboard}
-              className="text-white hover:text-gray-300"
+              className="text-[#4B5563] hover:text-[#111827]"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              All Projects
+              Projects
             </Button>
           </div>
 
-          <h1 className="font-extrabold capitalize">{project.title}</h1>
+          <h1 className="max-w-xl truncate text-base font-semibold capitalize text-[#111827]">
+            {project.title}
+          </h1>
 
           {/* Right: Actions */}
           <div className="flex items-center gap-3">
@@ -499,40 +502,40 @@ export function EditorTopBar({ project }) {
 
               <DropdownMenuContent
                 align="end"
-                className="w-56 bg-slate-800 border-slate-700"
+                className="w-60 rounded-none border-[#DADDE3] bg-white"
               >
-                <div className="px-3 py-2 text-sm text-white/70">
-                  Export Resolution: {project.width} × {project.height}px
+                <div className="px-3 py-2 text-sm text-[#4B5563]">
+                  Export size: {project.width} x {project.height}px
                 </div>
 
-                <DropdownMenuSeparator className="bg-slate-700" />
+                <DropdownMenuSeparator className="bg-[#DADDE3]" />
 
                 {EXPORT_FORMATS.map((config, index) => (
                   <DropdownMenuItem
                     key={index}
                     onClick={() => handleExport(config)}
-                    className="text-white hover:bg-slate-700 cursor-pointer flex items-center gap-2"
+                    className="text-[#111827] hover:bg-[#F7F7F8] cursor-pointer flex items-center gap-2"
                   >
                     <FileImage className="h-4 w-4" />
                     <div className="flex-1">
                       <div className="font-medium">{config.label}</div>
-                      <div className="text-xs text-white/50">
-                        {config.format} • {Math.round(config.quality * 100)}%
+                      <div className="text-xs text-[#6B7280]">
+                        {config.format} - {Math.round(config.quality * 100)}%
                         quality
                       </div>
                     </div>
                   </DropdownMenuItem>
                 ))}
 
-                <DropdownMenuSeparator className="bg-slate-700" />
+                <DropdownMenuSeparator className="bg-[#DADDE3]" />
 
                 {/* Export Limit Info for Free Users */}
                 {isFree && (
-                  <div className="px-3 py-2 text-xs text-white/50">
-                    Free Plan: {user?.exportsThisMonth || 0}/20 exports this
+                  <div className="px-3 py-2 text-xs text-[#6B7280]">
+                    Free plan: {user?.exportsThisMonth || 0}/20 exports this
                     month
                     {(user?.exportsThisMonth || 0) >= 20 && (
-                      <div className="text-amber-400 mt-1">
+                      <div className="text-[#002FA7] mt-1">
                         Upgrade to Pro for unlimited exports
                       </div>
                     )}
@@ -560,14 +563,14 @@ export function EditorTopBar({ project }) {
                   onClick={() => handleToolChange(tool.id)}
                   className={`gap-2 relative ${
                     isActive
-                      ? "bg-blue-600 text-white hover:bg-blue-700"
-                      : "text-white hover:text-gray-300 hover:bg-gray-100"
+                      ? "bg-[#002FA7] text-white hover:bg-[#002985]"
+                      : "text-[#4B5563] hover:text-[#111827] hover:bg-[#F7F7F8]"
                   } ${!hasToolAccess ? "opacity-60" : ""}`}
                 >
                   <Icon className="h-4 w-4" />
                   {tool.label}
                   {tool.proOnly && !hasToolAccess && (
-                    <Lock className="h-3 w-3 text-amber-400" />
+                    <Lock className="h-3 w-3 text-[#002FA7]" />
                   )}
                 </Button>
               );
@@ -577,11 +580,11 @@ export function EditorTopBar({ project }) {
           {/* Right side controls */}
           <div className="flex items-center gap-4">
             {/* Undo/Redo */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 border-l border-[#DADDE3] pl-4">
               <Button
                 variant="ghost"
                 size="sm"
-                className={`text-white ${!canUndo ? "opacity-50 cursor-not-allowed" : "hover:bg-slate-700"}`}
+                className={`text-[#4B5563] ${!canUndo ? "opacity-50 cursor-not-allowed" : "hover:bg-[#F7F7F8]"}`}
                 onClick={handleUndo}
                 disabled={!canUndo || isUndoRedoOperation}
                 title={`Undo (${undoStack.length - 1} actions available)`}
@@ -591,7 +594,7 @@ export function EditorTopBar({ project }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`text-white ${!canRedo ? "opacity-50 cursor-not-allowed" : "hover:bg-slate-700"}`}
+                className={`text-[#4B5563] ${!canRedo ? "opacity-50 cursor-not-allowed" : "hover:bg-[#F7F7F8]"}`}
                 onClick={handleRedo}
                 disabled={!canRedo || isUndoRedoOperation}
                 title={`Redo (${redoStack.length} actions available)`}

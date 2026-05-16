@@ -56,9 +56,11 @@ export function AIEdit({ project }) {
   const { canvasEditor, setProcessingMessage } = useCanvas();
   const [selectedPreset, setSelectedPreset] = useState("ai_retouch"); // Fixed default
   const { mutate: updateProject } = useConvexMutation(
-    api.projects.updateProject
+    api.projects.updateProject,
   );
-  const { mutate: consumeAiUsage } = useConvexMutation(api.users.consumeAiUsage);
+  const { mutate: consumeAiUsage } = useConvexMutation(
+    api.users.consumeAiUsage,
+  );
 
   const getMainImage = () =>
     canvasEditor?.getObjects().find((obj) => obj.type === "image") || null;
@@ -86,7 +88,7 @@ export function AIEdit({ project }) {
   const applyRetouch = async () => {
     const mainImage = getMainImage();
     const selectedPresetData = RETOUCH_PRESETS.find(
-      (p) => p.key === selectedPreset
+      (p) => p.key === selectedPreset,
     );
 
     if (!mainImage || !project || !selectedPresetData) return;
@@ -165,7 +167,7 @@ export function AIEdit({ project }) {
   const hasActiveTransformations =
     project.activeTransformations?.includes("e-retouch");
   const selectedPresetData = RETOUCH_PRESETS.find(
-    (p) => p.key === selectedPreset
+    (p) => p.key === selectedPreset,
   );
 
   return (

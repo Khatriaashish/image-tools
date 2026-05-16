@@ -28,9 +28,11 @@ export function AIExtenderControls({ project }) {
   const [selectedDirection, setSelectedDirection] = useState(null);
   const [extensionAmount, setExtensionAmount] = useState(200);
   const { mutate: updateProject } = useConvexMutation(
-    api.projects.updateProject
+    api.projects.updateProject,
   );
-  const { mutate: consumeAiUsage } = useConvexMutation(api.users.consumeAiUsage);
+  const { mutate: consumeAiUsage } = useConvexMutation(
+    api.users.consumeAiUsage,
+  );
 
   const getMainImage = () =>
     canvasEditor?.getObjects().find((obj) => obj.type === "image") || null;
@@ -109,7 +111,7 @@ export function AIExtenderControls({ project }) {
       const scale = Math.min(
         project.width / extendedImage.width,
         project.height / extendedImage.height,
-        1
+        1,
       );
 
       extendedImage.set({
