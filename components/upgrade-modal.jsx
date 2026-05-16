@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { X, Crown, Zap } from "lucide-react";
+import { Crown, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PricingTable } from "@clerk/nextjs";
+import { BILLING_ENABLED, plans } from "@/components/pricing";
 
 export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
   const getToolName = (toolId) => {
@@ -19,18 +20,20 @@ export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
       background: "AI Background Tools",
       ai_extender: "AI Image Extender",
       ai_edit: "AI Editor",
+      export: "Export limit",
+      projects: "Project limit",
     };
-    return toolNames[toolId] || "Premium Feature";
+    return toolNames[toolId] || "Pro feature";
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-4xl bg-slate-800 border-white/10 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-3xl bg-white border-[#DADDE3] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <Crown className="h-6 w-6 text-yellow-500" />
-            <DialogTitle className="text-2xl font-bold text-white">
-              Upgrade to Pro
+            <Crown className="h-6 w-6 text-[#002FA7]" />
+            <DialogTitle className="text-2xl font-semibold text-[#111827]">
+              Upgrade
             </DialogTitle>
           </div>
         </DialogHeader>
@@ -38,28 +41,53 @@ export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
         <div className="space-y-6">
           {/* Restriction Message */}
           {restrictedTool && (
-            <Alert className="bg-amber-500/10 border-amber-500/20">
-              <Zap className="h-5 w-5 text-amber-400" />
-              <AlertDescription className="text-amber-300/80">
-                <div className="font-semibold text-amber-400 mb-1">
-                  {getToolName(restrictedTool)} - Pro Feature
+            <Alert className="bg-[#F7F7F8] border-[#DADDE3]">
+              <Zap className="h-5 w-5 text-[#002FA7]" />
+              <AlertDescription className="text-[#4B5563]">
+                <div className="font-semibold text-[#111827] mb-1">
+                  {getToolName(restrictedTool)}
                 </div>
                 {reason ||
-                  `${getToolName(restrictedTool)} is only available on the Pro plan. Upgrade now to unlock this powerful feature and more.`}
+                  `${getToolName(restrictedTool)} is available on the Pro plan.`}
               </AlertDescription>
             </Alert>
           )}
 
-          <PricingTable />
+          {BILLING_ENABLED ? (
+            <PricingTable />
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2">
+              {plans.map((plan) => (
+                <div key={plan.id} className="border border-[#DADDE3] p-5">
+                  <div className="flex items-start justify-between border-b border-[#DADDE3] pb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-[#111827]">
+                        {plan.name}
+                      </h3>
+                      <p className="text-sm text-[#6B7280]">{plan.note}</p>
+                    </div>
+                    <p className="text-2xl font-semibold text-[#111827]">
+                      {plan.price}
+                    </p>
+                  </div>
+                  <ul className="mt-4 space-y-2 text-sm text-[#4B5563]">
+                    {plan.features.map((feature) => (
+                      <li key={feature}>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <DialogFooter className="justify-center">
           <Button
             variant="ghost"
             onClick={onClose}
-            className="text-white/70 hover:text-white"
+            className="text-[#4B5563] hover:text-[#111827]"
           >
-            Maybe Later
+            Close
           </Button>
         </DialogFooter>
       </DialogContent>

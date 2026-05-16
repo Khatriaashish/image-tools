@@ -3,24 +3,37 @@
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { useConvexQuery } from "@/hooks/use-convex-query";
+import { useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Loader2, Monitor } from "lucide-react";
+import { Loader2, LogIn, Monitor } from "lucide-react";
 import { EditorTopBar } from "./_components/editor-topbar";
 import { EditorSidebar } from "./_components/editor-sidebar";
 import CanvasEditor from "./_components/canvas";
 import { CanvasContext } from "@/context/context";
 import { RingLoader } from "react-spinners";
+import Link from "next/link";
 
 export default function EditorPage() {
   const params = useParams();
   const projectId = params.projectId;
+  const { isLoading: authLoading, isAuthenticated } = useConvexAuth();
+
+  if (authLoading) {
+    return <LoadingState label="Checking your session..." />;
+  }
+
+  if (!isAuthenticated) {
+    return <SignedOutState />;
+  }
+
+  return <AuthenticatedEditor projectId={projectId} />;
+}
+
+function AuthenticatedEditor({ projectId }) {
   const [canvasEditor, setCanvasEditor] = useState(null);
   const [processingMessage, setProcessingMessage] = useState(null);
-
-  // State for active tool
   const [activeTool, setActiveTool] = useState("resize");
 
-  // Get project data
   const {
     data: project,
     isLoading,
@@ -114,5 +127,41 @@ export default function EditorPage() {
         </div>
       </div>
     </CanvasContext.Provider>
+  );
+}
+
+function LoadingState({ label }) {
+  return (
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 className="h-8 w-8 animate-spin text-cyan-400" />
+        <p className="text-white/70">{label}</p>
+      </div>
+    </div>
+  );
+}
+
+function SignedOutState() {
+  return (
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-6">
+      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-8 text-center shadow-2xl backdrop-blur">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-cyan-400/10 text-cyan-300">
+          <LogIn className="h-6 w-6" />
+        </div>
+        <h1 className="text-2xl font-semibold text-white">Sign in required</h1>
+        <p className="mt-3 text-sm leading-6 text-white/70">
+          This editor uses authenticated Convex queries. Sign in again, then
+          reopen the project.
+        </p>
+        <div className="mt-6 flex items-center justify-center">
+          <Link
+            href="/sign-in"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-cyan-400 px-4 text-sm font-medium text-slate-950 transition-colors hover:bg-cyan-300"
+          >
+            Go to sign in
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
