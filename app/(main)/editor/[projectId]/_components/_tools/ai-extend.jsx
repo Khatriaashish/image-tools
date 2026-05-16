@@ -30,6 +30,7 @@ export function AIExtenderControls({ project }) {
   const { mutate: updateProject } = useConvexMutation(
     api.projects.updateProject
   );
+  const { mutate: consumeAiUsage } = useConvexMutation(api.users.consumeAiUsage);
 
   const getMainImage = () =>
     canvasEditor?.getObjects().find((obj) => obj.type === "image") || null;
@@ -95,6 +96,8 @@ export function AIExtenderControls({ project }) {
     setProcessingMessage("Extending image with AI...");
 
     try {
+      await consumeAiUsage();
+
       const currentImageUrl = getImageSrc(mainImage);
       const extendedUrl = buildExtensionUrl(currentImageUrl);
 

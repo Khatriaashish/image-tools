@@ -16,6 +16,8 @@ import {
 import { HexColorPicker } from "react-colorful";
 import { useCanvas } from "@/context/context";
 import { FabricImage } from "fabric";
+import { useConvexMutation } from "@/hooks/use-convex-query";
+import { api } from "@/convex/_generated/api";
 
 // Unsplash API configuration
 const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
@@ -28,6 +30,7 @@ export function BackgroundControls({ project }) {
   const [unsplashImages, setUnsplashImages] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedImageId, setSelectedImageId] = useState(null);
+  const { mutate: consumeAiUsage } = useConvexMutation(api.users.consumeAiUsage);
 
   // Get the main image object from canvas
   const getMainImage = () => {
@@ -44,6 +47,8 @@ export function BackgroundControls({ project }) {
     setProcessingMessage("Removing background with AI...");
 
     try {
+      await consumeAiUsage();
+
       // Get the current image URL
       const currentImageUrl =
         project.currentImageUrl || project.originalImageUrl;

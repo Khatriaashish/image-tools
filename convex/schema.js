@@ -17,6 +17,7 @@ export default defineSchema({
     // Usage tracking for plan limits
     projectsUsed: v.number(), // Current project count
     exportsThisMonth: v.number(), // Monthly export limit tracking
+    aiUsesUsed: v.optional(v.number()), // Free AI usage count
 
     // Activity timestamps
     createdAt: v.number(),

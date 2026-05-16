@@ -1,11 +1,14 @@
 // hooks/use-plan-access.js
 import { useAuth } from "@clerk/nextjs";
 
-export function usePlanAccess() {
+export function usePlanAccess(user = null) {
   const { has } = useAuth();
 
-  const isPro = has?.({ plan: "pro" }) || false;
+  const isPro = has?.({ plan: "pro" }) || user?.plan === "pro" || false;
   const isFree = !isPro; // If not pro, then free (default)
+  const aiUsesUsed = user?.aiUsesUsed ?? 0;
+  const freeAiUsesLeft = isPro ? null : Math.max(0, 2 - aiUsesUsed);
+  const canUseAiTools = isPro || aiUsesUsed < 2;
 
   // Define which tools are available for each plan
   const planAccess = {
@@ -15,10 +18,10 @@ export function usePlanAccess() {
     adjust: true,
     text: true,
 
-    // Pro-only tools
-    background: isPro,
-    ai_extender: isPro,
-    ai_edit: isPro,
+    // AI tools are available to free users for 2 uses total
+    background: canUseAiTools,
+    ai_extender: canUseAiTools,
+    ai_edit: canUseAiTools,
   };
 
   // Helper function to check if user has access to a specific tool
@@ -45,14 +48,30 @@ export function usePlanAccess() {
     return currentExportsThisMonth < 20;
   };
 
+  const getRestrictionReason = (toolId) => {
+    if (isPro) return null;
+
+    if (["background", "ai_extender", "ai_edit"].includes(toolId)) {
+      if (freeAiUsesLeft === 0) {
+        return "Free plan includes 2 AI uses total. Upgrade to Pro for unlimited AI tools.";
+      }
+      return `Free plan includes ${freeAiUsesLeft} AI use${freeAiUsesLeft === 1 ? "" : "s"} left.`;
+    }
+
+    return null;
+  };
+
   return {
     userPlan: isPro ? "pro" : "free_user",
     isPro,
     isFree,
+    aiUsesUsed,
+    freeAiUsesLeft,
     hasAccess,
     planAccess,
     getRestrictedTools,
     canCreateProject,
     canExport,
+    getRestrictionReason,
   };
 }

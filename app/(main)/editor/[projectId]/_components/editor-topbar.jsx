@@ -119,13 +119,13 @@ export function EditorTopBar({ project }) {
   const [isUndoRedoOperation, setIsUndoRedoOperation] = useState(false);
 
   const { activeTool, onToolChange, canvasEditor } = useCanvas();
-  const { hasAccess, canExport, isFree } = usePlanAccess();
 
   // Use the loading states from the hooks
   const { mutate: updateProject, isLoading: isSaving } = useConvexMutation(
     api.projects.updateProject
   );
   const { data: user } = useConvexQuery(api.users.getCurrentUser);
+  const { hasAccess, canExport, isFree, getRestrictionReason } = usePlanAccess(user);
 
   // Save canvas state to undo stack
   const saveToUndoStack = () => {
@@ -614,7 +614,7 @@ export function EditorTopBar({ project }) {
         reason={
           restrictedTool === "export"
             ? "Free plan is limited to 20 exports per month. Upgrade to Pro for unlimited exports."
-            : undefined
+            : getRestrictionReason(restrictedTool)
         }
       />
     </>

@@ -58,6 +58,7 @@ export function AIEdit({ project }) {
   const { mutate: updateProject } = useConvexMutation(
     api.projects.updateProject
   );
+  const { mutate: consumeAiUsage } = useConvexMutation(api.users.consumeAiUsage);
 
   const getMainImage = () =>
     canvasEditor?.getObjects().find((obj) => obj.type === "image") || null;
@@ -93,6 +94,8 @@ export function AIEdit({ project }) {
     setProcessingMessage(`Enhancing image with ${selectedPresetData.label}...`);
 
     try {
+      await consumeAiUsage();
+
       const currentImageUrl =
         mainImage.getSrc?.() || mainImage._element?.src || mainImage.src;
       const retouchedUrl = buildRetouchUrl(currentImageUrl, selectedPreset);
@@ -147,7 +150,7 @@ export function AIEdit({ project }) {
     return (
       <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="h-5 w-5 text-amber-400 mt-0.5 flex-shrink-0" />
+          <AlertTriangle className="h-5 w-5 text-amber-400 mt-0.5 shrink-0" />
           <div>
             <h3 className="text-amber-400 font-medium mb-1">No Image Found</h3>
             <p className="text-amber-300/80 text-sm">
@@ -171,7 +174,7 @@ export function AIEdit({ project }) {
       {hasActiveTransformations && (
         <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
           <div className="flex items-start gap-3">
-            <CheckCircle className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
+            <CheckCircle className="h-5 w-5 text-green-400 mt-0.5 shrink-0" />
             <div>
               <h3 className="text-green-400 font-medium mb-1">
                 Image Enhanced

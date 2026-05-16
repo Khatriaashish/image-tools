@@ -36,7 +36,7 @@ function AuthenticatedDashboard({
 }) {
   // Get user's projects
   const { data: projects, isLoading } = useConvexQuery(
-    api.projects.getUserProjects
+    api.projects.getUserProjects,
   );
 
   return (
@@ -98,7 +98,9 @@ function SignedOutState() {
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#002FA7]/10 text-[#002FA7]">
           <LogIn className="h-6 w-6" />
         </div>
-        <h1 className="text-2xl font-semibold text-[#111827]">Sign in required</h1>
+        <h1 className="text-2xl font-semibold text-[#111827]">
+          Sign in required
+        </h1>
         <p className="mt-3 text-sm leading-6 text-[#4B5563]">
           Your projects are protected by Convex auth. Sign in to load the
           dashboard.
@@ -137,7 +139,7 @@ function EmptyState({ onCreateProject }) {
         onClick={onCreateProject}
         variant="primary"
         size="xl"
-      className="gap-2"
+        className="gap-2"
       >
         <Plus className="h-5 w-5" />
         Upload image
